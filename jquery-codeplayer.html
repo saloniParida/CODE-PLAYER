@@ -1,0 +1,115 @@
+<html>
+  <head>
+    <title>Code Player</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+    <style>
+      body {
+        font-family: sans-serif;
+        padding: 0;
+        margin: 0;
+      }
+      #logo {
+        float: left;
+        font-weight: bold;
+        font-size: 120%;
+        padding: 3px 5px;
+      }
+      #header {
+        width: 100%;
+        background-color: #eeeeee;
+        padding: 5px;
+        height: 30px;
+      }
+      #buttonContainer {
+        width: 233px;
+        margin: 0 auto;
+      }
+      .toggleButton {
+        float: left;
+        border: 1px solid grey;
+        padding: 6px;
+        border-right: none;
+        font-size: 90%;
+      }
+      #html {
+        border-top-left-radius: 4px;
+        border-bottom-left-radius: 4px;
+      }
+      #output {
+        border-top-right-radius: 4px;
+        border-bottom-right-radius: 4px;
+        border-right: 1px solid grey;
+      }
+      .active {
+        background-color: #e8f2ff;
+      }
+      .highlightedButton {
+        background-color: grey;
+      }
+      textarea {
+        resize: none;
+        border-top: none;
+        border-color: none;
+      }
+      .panel {
+        float: left;
+        width: 50%;
+        border-left: none;
+      }
+      iframe {
+        border: none;
+      }
+      .hidden {
+        display: none;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="header">
+      <div id="logo">Code Player</div>
+      <div id="buttonContainer">
+        <div class="toggleButton active" id="html">HTML</div>
+        <div class="toggleButton" id="css">CSS</div>
+        <div class="toggleButton" id="js">JavaScript</div>
+        <!-- <div class="toggleButton" id="consolse">Console</div> -->
+        <div class="toggleButton active" id="output">Output</div>
+      </div>
+    </div>
+    <div id="bodyContainer">
+      <textarea id="htmlPanel" class="panel"><p>Hello World</p></textarea>
+      <textarea id="cssPanel" class="panel hidden">p {color:blue;}</textarea>
+      <textarea id="jsPanel" class="panel hidden">alert("hi there!);</textarea>
+      <iframe id="outputPanel" class="panel"></iframe>
+    </div>
+    <script>
+      // function updateOutput(){
+      //   $("iframe")
+      //     .contents()
+      //     .find("html")
+      //     .html();
+      // }
+      $(".toggleButton").hover(
+        function () {
+          $(this).addClass("highlightedButton");
+        },
+        function () {
+          $(this).removeClass("highlightedButton");
+        }
+      );
+      $(".toggleButton").click(function () {
+        $(this).toggleClass("active");
+        $(this).removeClass("highlightedButton");
+        var PanelId = $(this).attr("id") + "Panel";
+        $("#" + PanelId).toggleClass("hidden");
+        var activePanel = 4 - $(".hidden").length;
+        $(".panel").width(($(window).width() / activePanel) - 17);
+      });
+      $(".panel").height($(window).height() - $("#header").height() - 17);
+      $(".panel").width(($(window).width() / 2) - 17); 
+      $("iframe").contents().find("html").html($("#htmlPanel").val());
+      $("textarea").on('change keyup paste', function () {
+        $("iframe").contents().find("html").html("<html><head><style type = 'text/css'>" +$("#cssPanel").val() +"</style></head><body>" +$("#htmlPanel").val() )
+           });
+    </script>
+  </body>
+</html>
